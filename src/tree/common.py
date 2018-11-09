@@ -3,6 +3,7 @@ from enum import Enum
 class Color(Enum):
     red = 1
     black = 2
+    bblack = 3    #double black used for delete one rb node.
     noColor = -1
 
 class Node(object):
