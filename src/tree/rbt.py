@@ -1,7 +1,7 @@
 #red-black Tree
 
 from common import *
-
+from bst import *
 
 def replace(xnode, ynode):
     if xnode is None:

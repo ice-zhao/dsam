@@ -12,7 +12,7 @@ class Node(object):
         self.parent = None
         self.left = None
         self.right = None
-        self.color = Color.noColor
+        self.color = Color.red        #default is red
 
     def getLeft(self):
         return self.left
@@ -50,6 +50,14 @@ class Node(object):
         self.color = newColor
         return oldColor
 
+    def getGrandparent(self):
+        parent = self.getParent()
+        grandparent = None
+
+        if parent is not None:
+            grandparent = parent.getParent()
+
+        return grandparent
 
 
 

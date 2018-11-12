@@ -40,7 +40,7 @@ def FirstTraverse(bst):
 def middleTraverse(bst):
     if bst is not None:
         middleTraverse(bst.getLeft())
-        print bst.getValue()
+        print "%d,  %s" % (bst.getValue(), bst.color.name)
         middleTraverse(bst.getRight())
 
     return
@@ -187,9 +187,10 @@ def testBst(vals):
     bst = node
 
 #    FirstTraverse(bst)
-#    middleTraverse(bst)
+    middleTraverse(bst)
 #    lastTraverse(bst)
 
+#test successor or predecessor of one node
     node = findNode(bst, 6)
     succ = successorBst(node)
     pred = predecessorBst(node)
@@ -203,6 +204,7 @@ def testBst(vals):
 #        print pred_val
         pass
 
+#test delete one node
 #    tree = deleteNode(bst, node)
 #    node = findNode(bst, 7)
 #    tree = deleteNode(bst, node)
@@ -210,6 +212,16 @@ def testBst(vals):
 #
 #    node = findNode(bst, 9)
 #    print node.getParent().getValue()
+
+#test get grandparent
+#    nodex = findNode(bst, 2)
+#    if nodex is not None:
+#        grandparent = nodex.getGrandparent()
+#        if grandparent is not None:
+#            print "grandparent of %d: %d" % (nodex.getValue(), grandparent.getValue())
+#        else:
+#            print "can't find node %d's grandparent." % nodex.getValue()
+
     return node
 
 
