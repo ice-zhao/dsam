@@ -30,7 +30,7 @@ def insertNode(root, val):
 
 def FirstTraverse(bst):
     if bst is not None:
-        print bst.getValue()
+        print "%d,  %s" % (bst.getValue(), bst.color.name)
         FirstTraverse(bst.getLeft())
         FirstTraverse(bst.getRight())
 
@@ -175,54 +175,71 @@ def deleteNode(bst, dnode):
 
 
 
+class TestBst(object):
+    def __init__(self, vals):
+        self.node = None
+        self.bst = None
+        for item in vals:
+            self.node = insertNode(self.node, item)
+        self.bst = self.node
+
+    def testSuccessorAndPredecessor(self):
+        #test successor or predecessor of one node
+        node = findNode(self.bst, 6)
+        succ = successorBst(node)
+        pred = predecessorBst(node)
+        try:
+            val= succ.getValue()
+            pred_val = pred.getValue()
+        except Exception, e:
+            print e
+        else:
+            print val
+            print pred_val
+
+    def testDeleteNode(self):
+        #test delete one node
+        node = findNode(self.bst, 6)
+        tree = deleteNode(self.bst, node)
+        node = findNode(self.bst, 7)
+        tree = deleteNode(self.bst, node)
+    #    middleTraverse(tree)
+
+        node = findNode(self.bst, 9)
+        print node.getParent().getValue()
+
+    def testGetParent(self):
+        #test get grandparent
+        nodex = findNode(self.bst, 2)
+        if nodex is not None:
+            grandparent = nodex.getGrandparent()
+            if grandparent is not None:
+                print "grandparent of %d: %d" % (nodex.getValue(), grandparent.getValue())
+            else:
+                print "can't find node %d's grandparent." % nodex.getValue()
+
+    def testGetUncle(self):
+        #test get uncle
+        nodex = findNode(self.bst, 1)
+        if nodex is not None:
+            uncle = nodex.getUncle()
+            if uncle is not None:
+                print "uncle of %d: %d" % (nodex.getValue(), uncle.getValue())
+            else:
+                print "can't find node %d's uncle." % nodex.getValue()
+
+
 
 
 
 
 def testBst(vals):
-    node = None
-    for item in vals:
-        node = insertNode(node, item)
-
-    bst = node
-
-#    FirstTraverse(bst)
-    middleTraverse(bst)
-#    lastTraverse(bst)
-
-#test successor or predecessor of one node
-    node = findNode(bst, 6)
-    succ = successorBst(node)
-    pred = predecessorBst(node)
-    try:
-        val= succ.getValue()
-        pred_val = pred.getValue()
-    except Exception, e:
-        print e
-    else:
-#        print val
-#        print pred_val
-        pass
-
-#test delete one node
-#    tree = deleteNode(bst, node)
-#    node = findNode(bst, 7)
-#    tree = deleteNode(bst, node)
-##    middleTraverse(tree)
-#
-#    node = findNode(bst, 9)
-#    print node.getParent().getValue()
-
-#test get grandparent
-#    nodex = findNode(bst, 2)
-#    if nodex is not None:
-#        grandparent = nodex.getGrandparent()
-#        if grandparent is not None:
-#            print "grandparent of %d: %d" % (nodex.getValue(), grandparent.getValue())
-#        else:
-#            print "can't find node %d's grandparent." % nodex.getValue()
-
-    return node
+    mybst = TestBst(vals)
+#    FirstTraverse(mybst.bst)
+#    middleTraverse(mybst.bst)
+#    lastTraverse(mybst.bst)
+#    mybst.testGetUncle()
+    return mybst
 
 
 

@@ -59,6 +59,19 @@ class Node(object):
 
         return grandparent
 
+    def getUncle(self):
+        grandparent = self.getGrandparent()
+        parent = self.getParent()
+        uncle = None
+
+        if grandparent is not None:
+            if grandparent.getLeft() == parent:
+                uncle = grandparent.getRight()
+            else:
+                uncle = grandparent.getLeft()
+
+        return uncle
+
 
 
 
