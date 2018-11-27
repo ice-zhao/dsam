@@ -33,7 +33,6 @@ def FirstTraverse(bst):
         print "%d,  %s" % (bst.getValue(), bst.color.name)
         FirstTraverse(bst.getLeft())
         FirstTraverse(bst.getRight())
-
     return
 
 
@@ -42,7 +41,6 @@ def middleTraverse(bst):
         middleTraverse(bst.getLeft())
         print "%d,  %s" % (bst.getValue(), bst.color.name)
         middleTraverse(bst.getRight())
-
     return
 
 
@@ -51,7 +49,6 @@ def lastTraverse(bst):
         lastTraverse(bst.getLeft())
         lastTraverse(bst.getRight())
         print bst.getValue()
-
     return
 
 def findNode(bst, val):
@@ -159,14 +156,16 @@ def deleteNode(bst, dnode):
 
     if parent is None:
         root = dnode
-        dnode.setParent(None)
+        if root:
+            root.setParent(None)
     else:
         if parent.getLeft() == x1:
             parent.setLeft(dnode)
         else:
             parent.setRight(dnode)
 
-    x1.setParent(None)
+    if x1:
+        x1.setParent(None)
 
     return root
 
