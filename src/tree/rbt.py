@@ -154,14 +154,58 @@ def rb_mkblk(node):
 #1. delete a black leaf.
 # if the leaf has a brother, just delete it from parent. otherwise, set the
 # parent as double black color.
-def rb_fix_bblack(root, node, parent):
+def rb_fix_bblack(root, bbnode, bbparent):
+    while(bbnode is None or (bbnode.color == Color.black)) and bbnode != root:
+        if bbparent.getLeft() == bbnode:
+            other = bbparent.getRight()
+            if other.color == Color.red:
+                set_color([bbparent,other],[Color.red,Color.black])
+                root = leftRotation(root, bbparent)
+                other = bbparent.getRight()
+            if (other.getLeft() is None or other.getLeft().color == Color.black)\
+            and (other.getRight() is None or other.getRight().color == Color.black):
+                set_color([other],[Color.red])
+                bbnode = bbparent
+                bbparent = bbnode.getParent()
+            else:
+                if other.getRight() is None or other.getRight().color == Color.black:
+                    set_color([other,other.getLeft()],[Color.red,Color.black])
+                    root = rightRotation(root, other)
+                    other = bbparent.getRight()
+                set_color([other,bbparent,other.getRight()],\
+                          [bbparent.color, Color.black, Color.black])
+                root = leftRotation(root, bbparent)
+                bbnode = root
+                break
+        else:
+            other = bbparent.getLeft()
+            if other.color == Color.red:
+                set_color([bbparent,other],[Color.red,Color.black])
+                root = rightRotation(root, bbparent)
+                other = bbparent.getLeft()
+            if (other.getLeft() is None or other.getLeft().color == Color.black)\
+            and (other.getRight() is None or other.getRight().color == Color.black):
+                set_color([other],[Color.red])
+                bbnode = bbparent
+                bbparent = bbnode.getParent()
+            else:
+                if other.getLeft() is None or other.getLeft().color == Color.black:
+                    set_color([other,other.getRight()],[Color.red,Color.black])
+                    root = leftRotation(root, other)
+                    other = bbparent.getLeft()
+                set_color([other, bbparent, other.getLeft()],\
+                          [bbparent.color, Color.black, Color.black])
+                root = rightRotation(root, bbparent)
+                bbnode = root
+                break
+    if bbnode:
+        bbnode.color = Color.black
     return root
 
 def rb_delete(rbt_root, dnode):
     root = rbt_root
     parent = None
     child = None
-    rmin = None
     color = Color.noColor
 
     if dnode is None or root is None:
@@ -172,26 +216,33 @@ def rb_delete(rbt_root, dnode):
     elif dnode.getRight() is None:
         child = dnode.getLeft()
     else:
-        rmin = minValue(dnode.getRight())
+        old = dnode
+        dnode = minValue(dnode.getRight())
+
+        color = dnode.getColor()
+        child = dnode.getRight()
         parent = dnode.getParent()
-        rmin.setLeft(dnode.getLeft())
 
-        if rmin.getParent() != dnode:
-            rmin.getParent().setLeft(rmin.getRight())
-            rmin.setRight(dnode.getRight())
-
-        if parent:
-            if parent.getLeft() == dnode:
-                parent.setLeft(rmin)
-            else:
-                parent.setRight(rmin)
+        if parent == old:
+            parent = dnode
         else:
-            root = rmin
-            rmin.setParent(None)
+            parent.setLeft(child)
+            dnode.setRight(old.getRight())
 
-#        color = rmin.getColor()
+        dnode.color = old.color
+        dnode.setLeft(old.getLeft())
 
-        root = rb_fix_bblack(root, child, parent)
+        if old.getParent():
+            if old.getParent().getLeft() == old:
+                old.getParent().setLeft(dnode)
+            else:
+                old.getParent().setRight(dnode)
+        else:
+            root = dnode
+            root.setParent(None)
+
+        if color == Color.black:
+            root = rb_fix_bblack(root, child, parent)
         return root
 
     parent = dnode.getParent()
@@ -199,14 +250,16 @@ def rb_delete(rbt_root, dnode):
 
     if parent is None:
         root = child
-        root.setParent(None)
+        if root:
+            root.setParent(None)
     else:
         if parent.getLeft() == dnode:
             parent.setLeft(child)
         else:
             parent.setRight(child)
 
-    root = rb_fix_bblack(root, child, parent)
+    if color == Color.black:
+        root = rb_fix_bblack(root, child, parent)
     return root
 
 
@@ -214,8 +267,10 @@ class TestRbt(object):
     def __init__(self, vals):
         self.node = None
         self.root = None
+        self.dvalues = []
         for item in vals:
             self.node = rb_insert(self.node, item)
+            self.dvalues.append(item)
         self.root = self.node
 
     def rbtMiddleTraverse(self):
@@ -224,19 +279,20 @@ class TestRbt(object):
     def rbtFirstTraverse(self):
         FirstTraverse(self.root)
 
-#values = [3, 2, 1]
+    def testDeleteNode(self):
+        self.dvalues = [1,12,7,15,18,9,20,8]
+        for i in self.dvalues:
+            node = findNode(self.root, i)
+            self.root = rb_delete(self.root, node)
+        self.rbtFirstTraverse()
+        if self.root is None:
+            print "Empty red-black Tree"
+
 values = [1,12,7,15,18,9,20,8,13]
-#values = [2,4,3,5,6]
 def testRbt(vals):
-#    rbt = TestRbt(vals)
-#    rbt.rbtMiddleTraverse()
     rr = TestRbt(values)
-#    rr.rbtMiddleTraverse()
-    node = findNode(rr.root, 7)
-#    rr.root = rightRotation(rr.root, node)
-#    rr.root = leftRotation(rr.root, node)
-    rr.root = rb_delete(rr.root, node)
     rr.rbtFirstTraverse()
+#    rr.testDeleteNode()
 
 
 
