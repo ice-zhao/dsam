@@ -1,0 +1,3 @@
+[submodule "reverse/tools/ftrace"]
+	path = reverse/tools/ftrace
+	url = https://github.com/elfmaster/ftrace
