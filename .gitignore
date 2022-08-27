@@ -105,3 +105,5 @@ venv.bak/
 .project
 .pydevproject
 reverse/parself/.emacs.desktop
+reverse/parself/*.o
+reverse/parself/labs/*.o
