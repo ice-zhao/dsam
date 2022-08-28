@@ -107,3 +107,4 @@ venv.bak/
 reverse/parself/.emacs.desktop
 reverse/parself/*.o
 reverse/parself/labs/*.o
+.emacs.desktop

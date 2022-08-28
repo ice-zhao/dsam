@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <loader.h>
 #include <iostream>
+#include <glog/logging.h>
 
 auto main(int argc, char* argv[]) -> int {
     size_t i;
@@ -16,7 +17,9 @@ auto main(int argc, char* argv[]) -> int {
         return 0;
     }
 
+    google::InitGoogleLogging(argv[0]);
+
     filename.assign(argv[1]);
-    unit_test();
+    unit_test_loader(filename);
     return 0;
 }

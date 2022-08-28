@@ -79,6 +79,6 @@ public:
 
 int load_binary(std::string& filename, Binary* bin, BinaryType type);
 void unload_binary(Binary* pbin);
-void unit_test();
+void unit_test_loader(const std::string& filename);
 
 #endif

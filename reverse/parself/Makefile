@@ -1,10 +1,13 @@
 binutils_base=/home/ice/cto/tools/sources/tools/reverse/binutils-gdb
-libs_dir=-L/home/ice/cto/tools/sources/tools/reverse/binutils-gdb/install/lib
+glog_base=/home/ice/gm/tools/logging/glog/install
+
+libs_dir=-L${binutils_base}/install/lib -L${binutils_base}/libiberty -L${binutils_base}/zlib \
+		-L${glog_base}
 
 CXXFLAGS=
 LDFLAGS=
-include_dir=-I${PWD}/include
-LDLIBS=-lbfd
+include_dir=-I${PWD}/include -I${glog_base}
+LDLIBS=-lbfd -liberty -ldl -lz -lglog
 
 objs-loader=${PWD}/loader/loader.o
 
